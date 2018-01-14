@@ -6,7 +6,7 @@
 	url = https://github.com/ucb-art/BAG_framework.git
 [submodule "BAG2_TEMPLATES_EC"]
 	path = BAG2_TEMPLATES_EC
-	url = git@github.com:ucb-art/BAG2_TEMPLATES_EC
+	url = https://github.com/ucb-art/BAG2_TEMPLATES_EC
 [submodule "BAG_XBase_demo"]
 	path = BAG_XBase_demo
 	url = https://github.com/ucb-art/BAG_XBase_demo.git
