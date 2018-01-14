@@ -1,4 +1,5 @@
 import os
+import pprint
 
 import numpy as np
 
@@ -51,6 +52,10 @@ def characterize(prj):
                     tb_obj.set_parameter('vgs_start', 0)
                     tb_obj.set_parameter('vgs_stop', 1.2)
                     tb_obj.set_sweep_parameter('vds', start=0.0, stop=1.2, step=0.05)
+                else:
+                    tb_obj.set_parameter('vgs_start', -1.2)
+                    tb_obj.set_parameter('vgs_stop', 0.0)
+                    tb_obj.set_sweep_parameter('vds', start=-1.2, stop=0.0, step=0.05)
                 # update testbench changes and run simulation
                 tb_obj.update_testbench()
                 print('Simulating testbench %s...' % tb_name)
@@ -64,6 +69,26 @@ def characterize(prj):
     print('Characterization done.')
 
 
+def print_data_info():
+    tb_name = get_tb_name(mos_list[0], thres_list[0], lch_list[0])
+    results = load_sim_file(os.path.join(data_dir, '%s.data' % tb_name))
+    # show that results is a dictionary
+    print('results type: %s' % type(results))
+    print('results keys: %s' % list(results.keys()))
+    # show values in the result dictionary
+    vds = results['vds']
+    vgs = results['vgs']
+    ibias = results['ibias']
+    # show how the sweep variables and outputs are structured
+    print('vds type: {}, vds shape: {}'.format(type(vds), vds.shape))
+    print('vgs type: {}, vgs shape: {}'.format(type(vgs), vgs.shape))
+    print('ibias type: {}, ibias shape: {}'.format(type(ibias), ibias.shape))
+    # show how to get sweep parameter order
+    print('sweep_params:')
+    pprint.pprint(results['sweep_params'])
+    
+
+    
 def plot_data():
     # output data name
     output = 'ibias'
@@ -77,13 +102,13 @@ def plot_data():
                 tb_name = get_tb_name(mos_type, thres, lch)
                 results = load_sim_file(os.path.join(data_dir, '%s.data' % tb_name))
                 # plot data
-                plot_2d_data(results, 'ibias', fig_idx)
+                plot_2d_data(mos_type, results, 'ibias', fig_idx)
                 fig_idx += 1
 
     plt.show()
 
 
-def plot_2d_data(results, output, fig_idx):
+def plot_2d_data(mos_type, results, output, fig_idx):
     # get sweep variables name and order
     xvar_list = results['sweep_params'][output]
     # outer sweep variable 1D array
@@ -95,6 +120,10 @@ def plot_2d_data(results, output, fig_idx):
     # change 1D sweep array into 2D array with same size as results
     xmat, ymat = np.meshgrid(xvec, yvec, indexing='ij', copy=False)
 
+    if mos_type == 'pch':
+        # make sure bias current is positive
+        zmat *= -1
+    
     # plot 2D array output
     fig = plt.figure(fig_idx)
     ax = fig.add_subplot(111, projection='3d')
@@ -114,4 +143,5 @@ if __name__ == '__main__':
         bprj = local_dict['bprj']
 
     characterize(bprj)
+    # print_data_info()
     # plot_data()
