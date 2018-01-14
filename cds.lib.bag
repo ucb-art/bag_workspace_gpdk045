@@ -1,0 +1,5 @@
+DEFINE BAG_prim $BAG_TECH_CONFIG_DIR/BAG_prim
+DEFINE demo_templates $BAG_WORK_DIR/BAG_XBase_demo/demo_templates
+DEFINE demo_testbenches $BAG_WORK_DIR/BAG_XBase_demo/demo_testbenches
+DEFINE bag_serdes_ec $BAG_WORK_DIR/bag_serdes_ec/bag_serdes_ec
+DEFINE bag_testbenches_ec $BAG_WORK_DIR/bag_testbenches_ec/bag_testbenches_ec
