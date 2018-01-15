@@ -1,8 +1,8 @@
 ; set simulation results to be saved in /tools/scratch
-envSetVal("asimenv.startup" "projectDir" 'string sprintf( nil "/tools/scratch/%s/simulation" getShellEnvVar( "USER" ) ) )
+envSetVal("asimenv.startup" "projectDir" 'string sprintf( nil "%s/simulation" getShellEnvVar( "HOME" ) ) )
 
 ; set default editor
-editor = "/tools/projects/erichang/programs/core/bin/emacs"
+editor = "/usr/bin/emacs"
 
 ; resize CIW window
 ; hiResizeWindow(window(1) list(540:100 1260:480))
