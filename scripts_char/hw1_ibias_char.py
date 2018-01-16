@@ -42,7 +42,7 @@ def characterize(prj):
                 tb_name = get_tb_name(mos_type, thres, lch)
                 fname = os.path.join(data_dir, '%s.data' % tb_name)
                 if os.path.isfile(fname):
-                    print('File %s exists, skipping.')
+                    print('File %s exists, skipping.' % fname)
                     continue
                 print('Creating testbench %s...' % tb_name)
                 # create schematic generator
@@ -133,7 +133,7 @@ def plot_2d_data(mos_type, results, output, fig_idx):
         # plot 2D array output
         fig = plt.figure(fig_idx)
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot_surface(xmat, ymat, zmat, rstride=1, cstride=2, linewidth=0, cmap=cm.cubehelix)
+        ax.plot_surface(xmat, ymat, zmat, rstride=1, cstride=1, linewidth=0, cmap=cm.cubehelix)
         ax.set_xlabel(xvar_list[0])
         ax.set_ylabel(xvar_list[1])
         ax.set_zlabel(output)
