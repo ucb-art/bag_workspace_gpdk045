@@ -1,0 +1,2559 @@
+<?xml version="1.0"?>
+<setupdb version="6">data
+	<active>Active Setup
+		<corners>
+			<corner enabled="0">_default</corner>
+			<corner enabled="1">tt
+				<vars>
+					<var>temperature
+						<value>25</value>
+					</var>
+				</vars>
+				<models>
+					<model enabled="1">gpdk045.scs
+						<modeltest>All</modeltest>
+						<modelblock>Global</modelblock>
+						<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+						<modelsection>"tt"</modelsection>
+					</model>
+				</models>
+			</corner>
+			<corner enabled="0">ff
+				<vars>
+					<var>temperature
+						<value>70</value>
+					</var>
+				</vars>
+				<models>
+					<model enabled="1">gpdk045.scs
+						<modeltest>All</modeltest>
+						<modelblock>Global</modelblock>
+						<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+						<modelsection>"ff"</modelsection>
+					</model>
+				</models>
+			</corner>
+			<corner enabled="0">ss
+				<vars>
+					<var>temperature
+						<value>0</value>
+					</var>
+				</vars>
+				<models>
+					<model enabled="1">gpdk045.scs
+						<modeltest>All</modeltest>
+						<modelblock>Global</modelblock>
+						<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+						<modelsection>"ss"</modelsection>
+					</model>
+				</models>
+			</corner>
+			<corner enabled="0">sf
+				<vars>
+					<var>temperature
+						<value>25</value>
+					</var>
+				</vars>
+				<models>
+					<model enabled="1">gpdk045.scs
+						<modeltest>All</modeltest>
+						<modelblock>Global</modelblock>
+						<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+						<modelsection>"sf"</modelsection>
+					</model>
+				</models>
+			</corner>
+			<corner enabled="0">fs
+				<vars>
+					<var>temperature
+						<value>25</value>
+					</var>
+				</vars>
+				<models>
+					<model enabled="1">gpdk045.scs
+						<modeltest>All</modeltest>
+						<modelblock>Global</modelblock>
+						<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+						<modelsection>"fs"</modelsection>
+					</model>
+				</models>
+			</corner>
+		</corners>
+		<extensions>
+			<extension>Parasitics
+				<callback>_parSetupDBExtensionCB</callback>
+				<iconvalue></iconvalue>
+				<icontype></icontype>
+			</extension>
+		</extensions>
+		<currentmode>Single Run, Sweeps and Corners</currentmode>
+		<overwritehistory>0</overwritehistory>
+		<tests>
+			<test enabled="1">tb_ac_noise
+				<tool>ADE</tool>
+				<tooloptions>
+					<option>cell
+						<value>diffamp_tb_ac_noise</value>
+					</option>
+					<option>lib
+						<value>ee240b_hw2</value>
+					</option>
+					<option>sim
+						<value>spectre</value>
+					</option>
+					<option>view
+						<value>schematic</value>
+					</option>
+					<option>path
+						<value>$AXL_SETUPDB_DIR/test_states</value>
+					</option>
+					<option>state
+						<value>tb_ac_noise_active</value>
+					</option>
+				</tooloptions>
+				<origoptions>
+					<option>cell
+						<value>diffamp_tb_ac_noise</value>
+					</option>
+					<option>lib
+						<value>ee240b_hw2</value>
+					</option>
+					<option>sim
+						<value>spectre</value>
+					</option>
+					<option>view
+						<value>schematic</value>
+					</option>
+				</origoptions>
+				<outputs>
+					<output>fbw
+						<evalType>point</evalType>
+					</output>
+					<output>vout_noise
+						<evalType>point</evalType>
+					</output>
+					<output>vout_var_tot
+						<evalType>point</evalType>
+					</output>
+					<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+						<evalType>point</evalType>
+					</output>
+					<output>vout_var_bw
+						<evalType>point</evalType>
+					</output>
+					<output>gain
+						<evalType>point</evalType>
+					</output>
+					<output>snr_tot
+						<evalType>point</evalType>
+					</output>
+					<output>snr_den
+						<evalType>point</evalType>
+					</output>
+				</outputs>
+			</test>
+		</tests>
+		<vars>
+			<var>cload
+				<value>10e-15</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>seg_in
+				<value>40</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>seg_load
+				<value>2</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>seg_tail
+				<value>80</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>vdd
+				<value>1.2</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>vincm
+				<value>0.4382</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>voutcm
+				<value>0.6</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+			<var>vtail
+				<value>1.2-0.5456</value>
+				<dependentTests>
+					<dependentTest omitted="0">tb_ac_noise</dependentTest>
+				</dependentTests>
+			</var>
+		</vars>
+		<overwritehistoryname>Interactive.0</overwritehistoryname>
+		<plottingoptions>
+			<plottingoption>plottype
+				<value>None</value>
+			</plottingoption>
+			<plottingoption>usewaveformtemplate
+				<value>no</value>
+			</plottingoption>
+			<plottingoption>waveformtemplate
+				<value></value>
+			</plottingoption>
+			<plottingoption>allplottingtemplates
+				<value></value>
+			</plottingoption>
+			<plottingoption>defaultplottingtemplate
+				<value></value>
+			</plottingoption>
+		</plottingoptions>
+	</active>
+	<history>History
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.0
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.0</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>43.3f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>67</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>4</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>134</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>0.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:08:30 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.0.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.0.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_210830130</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.0</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.0</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.0.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.0.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.1
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.1</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>43.3f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>67</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>4</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>134</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>0.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:09:35 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.1.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.1.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_210935628</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.1</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.1</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.1.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.1.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.2
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.2</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>43.3f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>67</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>4</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>134</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:11:39 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.2.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.2.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_211139447</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.2</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.2</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.2.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.2.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.3
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.3</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>43.3f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>67</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>4</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>134</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:12:35 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.3.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.3.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_211236057</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.3</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.3</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.3.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.3.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.4
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.4</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>43.3f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>67</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>4</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>134</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:35:46 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.4.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.4.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_213546280</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.4</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.4</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.4.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.4.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.5
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.5</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>54.8f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>85</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>5</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>170</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 21:44:29 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.5.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.5.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_214429142</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.5</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.5</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.5.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.5.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.6
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.6</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>65.1f</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>101</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>5</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>202</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 22:03:22 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.6.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.6.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_220322808</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.6</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.6</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.6.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.6.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.7
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.7</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>1.298e-13</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>201</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>10</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>202</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 22:05:45 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.7.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.7.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_220545306</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.7</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.7</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.7.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.7.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.8
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.8</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>1.298e-13</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>201</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>10</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>402</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 22:08:52 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.8.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.8.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_220852159</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.8</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.8</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.8.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.8.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+		<historyentry assemblerOrExplorer="adexl" roOrView="view">Interactive.9
+			<checkpoint>
+				<corners>
+					<corner enabled="0">_default</corner>
+					<corner enabled="1">tt
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"tt"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ff
+						<vars>
+							<var>temperature
+								<value>70</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ff"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">ss
+						<vars>
+							<var>temperature
+								<value>0</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"ss"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">sf
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"sf"</modelsection>
+							</model>
+						</models>
+					</corner>
+					<corner enabled="0">fs
+						<vars>
+							<var>temperature
+								<value>25</value>
+							</var>
+						</vars>
+						<models>
+							<model enabled="1">gpdk045.scs
+								<modeltest>All</modeltest>
+								<modelblock>Global</modelblock>
+								<modelfile>/home/ff/ee240b/sp18/gpdk/gpdk045_v_5_0/models/spectre/gpdk045.scs</modelfile>
+								<modelsection>"fs"</modelsection>
+							</model>
+						</models>
+					</corner>
+				</corners>
+				<extensions>
+					<extension>Parasitics
+						<callback>_parSetupDBExtensionCB</callback>
+						<iconvalue></iconvalue>
+						<icontype></icontype>
+					</extension>
+				</extensions>
+				<currentmode>Single Run, Sweeps and Corners</currentmode>
+				<overwritehistory>0</overwritehistory>
+				<tests>
+					<test enabled="1">tb_ac_noise
+						<tool>ADE</tool>
+						<tooloptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+							<option>path
+								<value>$AXL_SETUPDB_DIR/test_states</value>
+							</option>
+							<option>state
+								<value>tb_ac_noise_none_Interactive.9</value>
+							</option>
+						</tooloptions>
+						<origoptions>
+							<option>cell
+								<value>diffamp_tb_ac_noise</value>
+							</option>
+							<option>lib
+								<value>ee240b_hw2</value>
+							</option>
+							<option>sim
+								<value>spectre</value>
+							</option>
+							<option>view
+								<value>schematic</value>
+							</option>
+						</origoptions>
+						<outputs>
+							<output>fbw
+								<evalType>point</evalType>
+							</output>
+							<output>vout_noise
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_tot
+								<evalType>point</evalType>
+							</output>
+							<output>integ((getData("out" ?result 'noise)**2) 1.4e+09 1.6e+09 " ")
+								<evalType>point</evalType>
+							</output>
+							<output>vout_var_bw
+								<evalType>point</evalType>
+							</output>
+							<output>gain
+								<evalType>point</evalType>
+							</output>
+							<output>snr_tot
+								<evalType>point</evalType>
+							</output>
+							<output>snr_den
+								<evalType>point</evalType>
+							</output>
+						</outputs>
+					</test>
+				</tests>
+				<vars>
+					<var>cload
+						<value>10e-15</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_in
+						<value>40</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_load
+						<value>2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>seg_tail
+						<value>80</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vdd
+						<value>1.2</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vincm
+						<value>0.4382</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>voutcm
+						<value>0.6</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+					<var>vtail
+						<value>1.2-0.5456</value>
+						<dependentTests>
+							<dependentTest omitted="0">tb_ac_noise</dependentTest>
+						</dependentTests>
+					</var>
+				</vars>
+				<overwritehistoryname>Interactive.0</overwritehistoryname>
+				<plottingoptions>
+					<plottingoption>plottype
+						<value>None</value>
+					</plottingoption>
+					<plottingoption>usewaveformtemplate
+						<value>no</value>
+					</plottingoption>
+					<plottingoption>waveformtemplate
+						<value></value>
+					</plottingoption>
+					<plottingoption>allplottingtemplates
+						<value></value>
+					</plottingoption>
+					<plottingoption>defaultplottingtemplate
+						<value></value>
+					</plottingoption>
+				</plottingoptions>
+				<sortVariableValues>0</sortVariableValues>
+			</checkpoint>
+			<timestamp>Feb 3 22:11:33 2018</timestamp>
+			<resultsname>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.9.rdb</resultsname>
+			<simresults>$AXL_SETUPDB_DIR/results/data/Interactive.9.rdb</simresults>
+			<rawdatadelstrategy>SaveAll
+				<simdatasavemode>All</simdatasavemode>
+			</rawdatadelstrategy>
+			<netlistdelstrategy>SaveAll</netlistdelstrategy>
+			<uselocalpsfdir>false</uselocalpsfdir>
+			<localpsfdir>/tmp/hpse-9.EECS.Berkeley.EDU_erichang_221133718</localpsfdir>
+			<psfdir>/home/aa/users/erichang/simulation/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.9</psfdir>
+			<simdir>$AXL_PROJECT_DIR/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.9</simdir>
+			<gendatasheetplotsonsimulation>1</gendatasheetplotsonsimulation>
+			<runlog>/home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2/diffamp_tb_ac_noise/adexl/results/data/Interactive.9.log</runlog>
+			<runlogfile>$AXL_SETUPDB_DIR/results/data/Interactive.9.log</runlogfile>
+			<schematicpoint></schematicpoint>
+			<test>all</test>
+		</historyentry>
+	</history>
+</setupdb>

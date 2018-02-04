@@ -1,1 +1,8 @@
 INCLUDE cds.lib.core
+DEFINE ee240b_mos_char /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_mos_char
+DEFINE AAAFOO_hw1_tb_ft /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_hw1_tb_ft
+DEFINE AAAFOO_hw1_tb_ibias /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_hw1_tb_ibias
+#Removed by ddDeleteObj: DEFINE AAAFOO_MOSCHAR_NCH /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_MOSCHAR_NCH
+DEFINE AAAFOO_MOSCHAR_PCH /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_MOSCHAR_PCH
+DEFINE AAAFOO_MOSCHAR_NCH /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_MOSCHAR_NCH
+DEFINE ee240b_hw2 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw2
