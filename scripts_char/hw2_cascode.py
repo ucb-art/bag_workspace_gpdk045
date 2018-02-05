@@ -24,16 +24,83 @@ def design_input(specs):
     voutcm = specs['voutcm']
     vstar = specs['vimax']
     vdst = specs['vdst_min']
+    casc_scale_max = specs['casc_scale_max']
+    casc_scale_step = specs['casc_scale_step']
+    casc_bias_step = specs['casc_bias_step']
     in_type = specs['in_type']
 
+    casc_scale_list = np.arange(1, casc_scale_max + casc_scale_step / 2, casc_scale_step)
     if in_type == 'nch':
         vb = 0
         vtail = vdst
+        casc_bias_list = np.arange(voutcm, vdd + casc_bias_step / 2, casc_bias_step)
     else:
         vb = specs['vdd']
         vtail = vb - vdst
+        casc_bias_list = np.arange(0, voutcm + casc_bias_step / 2, casc_bias_step)
 
-    return db.query(vbs=vb-vtail, vds=voutcm-vtail, vstar=vstar)
+    ib_fun = db.get_function('ibias')
+    gm_fun = db.get_function('gm')
+
+    def fun_zero(x, cs, cb):
+        vin, vmid = x
+        carg = db.get_fun_arg(vgs=cb-vmid, vds=voutcm-vmid, 
+                              vbs=vb-vmid)
+        farg = db.get_fun_arg(vgs=vin-vtail, vds=vmid-vtail, 
+                              vbs=vb-vtail)
+        idiff = (ib_fun(carg) * cs - ib_fun(farg))*1e6
+        vdiff = ((2 * ib_fun(farg) / gm_fun(farg)) - vstar)*1e3
+        return [vdiff, idiff]
+
+    metric_best = 0
+    op_best = None
+    for casc_scale in casc_scale_list:
+        for casc_bias in casc_bias_list:
+            args = (casc_scale, casc_bias)
+            guess = [voutcm, (voutcm + vtail)/2]
+            sol = sciopt.root(fun_zero, guess, args=args, 
+                              method='hybr')
+            if not success:
+                print('WARNING: failed input cascode solution '
+                      ' for scale = %.4g, bias = %.4g' % args)
+                continue
+            else:
+                vin, vmid = sol.x
+                cres = db.query(vgs=casc_bias-vmid, 
+                                vds=voutcm-vmid,
+                                vbs=vb-vmid)
+                bres = db.query(vgs=vin-vtail,
+                                vds=vmid-vtail,
+                                vbs=vb-vtail)
+                metric_cur = bres['gm'] / bres['gamma'] / bres['ibias']
+                if metric_cur > metric_best:
+                    metric_best = metric_cur
+                    op_best = casc_scale, cres, bres
+
+    if op_best is None:
+        raise ValueError('No solutions found.')
+
+    casc_scale, cres, bres = op_best
+    gmb = bres['gm']
+    gdsb = bres['gds']
+    ibias = bres['ibias']
+    gamma = bres['gamma']
+    gmc = cres['gm'] * casc_scale
+    gdsc = cres['gds'] * casc_scale
+    cddc = cres['cdd'] * casc_scale
+    input_op = dict(
+        casc_scale=casc_scale,
+        casc_bias=vb - cres['vbs'] + cres['vgs'],
+        vincm=vb - bres['vbs'] + bres['vgs'],
+        vin_mid=vb - bres['vbs'] + bres['vds'],
+        ibias=ibias,
+        gm=gmb,
+        gds=gdsb * gdsc / (gdsb + gdsc + gmc),
+        cdd=cddc,
+        gamma=gamma,
+        )
+
+    return input_op
 
 
 def design_load(specs, input_op):
@@ -45,17 +112,23 @@ def design_load(specs, input_op):
     """
     db = specs['load_db']
     sim_env = specs['sim_env']
-    vout = specs['voutcm']
+    voutcm = specs['voutcm']
     vgs_res = specs['vgs_res']
     gain_min = specs['gain_min']
     bw = specs['bw']
+    casc_scale_max = specs['casc_scale_max']
+    casc_scale_step = specs['casc_scale_step']
+    casc_bias_step = specs['casc_bias_step']
     in_type = specs['in_type']
-
+    
+    casc_scale_list = np.arange(1, casc_scale_max + casc_scale_step / 2, casc_scale_step)
     if in_type == 'nch':
         vs = specs['vdd']
+        casc_bias_list = np.arange(0, voutcm + casc_bias_step / 2, casc_bias_step)
     else:
         vs = 0
-
+        casc_bias_list = np.arange(voutcm, vdd + casc_bias_step / 2, casc_bias_step)
+                                   
     gm_fun = db.get_function('gm', env=sim_env)
     gds_fun = db.get_function('gds', env=sim_env)
     cdd_fun = db.get_function('cdd', env=sim_env)
@@ -71,38 +144,70 @@ def design_load(specs, input_op):
     gds_i = input_op['gds']
     cdd_i = input_op['cdd']
 
-    vgs_best = None
+    def fun_zero(vmid, vgs_bot, cs, cb):
+        carg = db.get_fun_arg(vgs=cb-vmid, vds=voutcm-vmid, 
+                              vbs=vs-vmid)
+        barg = db.get_fun_arg(vgs=vgs_bot, vds=vmid-vs, 
+                              vbs=0)
+        return (ib_fun(carg) * cs - ib_fun(barg))*1e6
+
+    best_ans = None
     metric_best = float('inf')
     gain_max = 0
     bw_max = 0
     for vgs_val in np.linspace(vgs_min, vgs_max, num_points, endpoint=True):
-        farg = db.get_fun_arg(vgs=vgs_val, vds=vout-vs, vbs=0)
-        scale = itarg / ib_fun(farg)
-        gm_r = gm_fun(farg) * scale
-        gds_r = gds_fun(farg) * scale
-        cdd_r = cdd_fun(farg) * scale
-        gamma_r = gamma_fun(farg)
+        for casc_scale in casc_scale_list:
+            for casc_bias in casc_bias_list:
+                # here
+                args = (vgs_val, casc_scale, casc_bias)
+                fout1 = fun_zero(voutcm, *args)
+                fout2 = fun_zero(vs, *args)
+                if fout1 * fout2 > 0:
+                    # no solution
+                    continue
+                vmid = sciopt.brentq(fun_zero, voutcm, vs, args=args)
+                
+                barg = db.get_fun_arg(vgs=vgs_val, vds=vmid-vs, vbs=0)
+                carg = db.get_fun_arg(vgs=casc_bias-vmid, vds=voutcm-vmid,
+                                      vbs=vs-vmid)
+                load_scale = itarg / ib_fun(barg)
+                gds_b = gds_fun(barg)
+                gds_c = gds_fun(carg)
+                gm_c = gds_fun(carg)
 
-        bw_cur = (gds_r + gds_i) / (cdd_i + cdd_r) / 2 / np.pi
-        gain_cur = gm_i / (gds_r + gds_i)
-        metric_cur = gamma_r * gm_r
-        if gain_cur >= gain_min and bw_cur >= bw:
-            if metric_cur < metric_best:
-                metric_best = metric_cur
-                vgs_best = vgs_val
-        else:
-            gain_max = max(gain_max, gain_cur)
-            bw_max = max(bw_max, bw_cur)
+                gm_l = gm_fun(farg) * load_scale
+                gds_l = gds_b * gds_c / (gds_b + gds_c + gm_c) * load_scale
+                cdd_l = cdd_fun(carg) * load_scale
+                gamma_l = gamma_fun(barg)
 
-    if vgs_best is None:
+                bw_cur = (gds_l + gds_i) / (cdd_i + cdd_l) / 2 / np.pi
+                gain_cur = gm_i / (gds_l + gds_i)
+                metric_cur = gamma_l * gm_l
+                if gain_cur >= gain_min and bw_cur >= bw:
+                    if metric_cur < metric_best:
+                        metric_best = metric_cur
+                        best_ans = dict(
+                            casc_scale=casc_scale,
+                            casc_bias=casc_bias,
+                            vload=vgs_val + vs,
+                            vload_mid=vmid,
+                            load_scale=load_scale,
+                            gm=gm_l,
+                            gds=gds_l,
+                            cdd=cdd_l,
+                            gamma=gamma_l,
+                            )
+                else:
+                    gain_max = max(gain_max, gain_cur)
+                    bw_max = max(bw_max, bw_cur)
+
+    if best_ans is None:
         raise ValueError('No solution.  max gain = %.4g, '
                          'max bw = %.4g' % (gain_max, bw_max))
     
-    result = db.query(vbs=0, vds=vout-vs, vgs=vgs_best)
-    scale = itarg / result['ibias']
-    return scale, result
+    return best_ans
 
-def design_amp(specs, input_op, load_op, load_scale):
+def design_amp(specs, input_op, load_op):
     fstart = specs['fstart']
     fstop = specs['fstop']
     vsig = specs['vsig']
@@ -115,14 +220,16 @@ def design_amp(specs, input_op, load_op, load_scale):
     in_type = specs['in_type']
     k = 1.38e-23
 
+    ibias = input_op['ibias']
     gm_i = input_op['gm']
     gds_i = input_op['gds']
     gamma_i = input_op['gamma']
     cdd_i = input_op['cdd']
-    gm_l = load_op['gm'] * load_scale
-    gds_l = load_op['gds'] * load_scale
-    cdd_l = load_op['cdd'] * load_scale
+    gm_l = load_op['gm']
+    gds_l = load_op['gds']
+    cdd_l = load_op['cdd']
     gamma_l = load_op['gamma']
+    load_scale = load_op['load_scale']
 
     snr_linear = 10.0**(snr_min / 10)
     gds_tot = gds_i + gds_l
@@ -168,33 +275,33 @@ def design_amp(specs, input_op, load_op, load_scale):
     gm_i *= seg_in
     gds_i *= seg_in
     cdd_i *= seg_in
-    gm_l = load_op['gm'] * seg_load
-    gds_l = load_op['gds'] * seg_load
-    cdd_l = load_op['cdd'] * seg_load
+    gm_l = gm_l / load_scale * seg_load
+    gds_l = gds_l / load_scale * seg_load
+    cdd_l = cdd_l / load_scale * seg_load
     
     gds_tot = gds_i + gds_l
     cdd_tot = cdd_i + cdd_l
-    if in_type == 'nch':
-        vincm = vdst + input_op['vgs']
-    else:
-        vincm = vdd - vdst + input_op['vgs']
     amp_specs = dict(
-        ibias=input_op['ibias'] * seg_in * 2,
+        seg_in=seg_in,
+        seg_load=seg_load,
+        ibias=ibias * seg_in * 2,
         gain=gm_i / gds_tot,
         bw=gds_tot / (2 * np.pi * (cload + cload_add + cdd_tot)),
-        vincm=vincm,
         cload=cload + cload_add,
         )
 
-    return seg_in, seg_load, amp_specs
+    return amp_specs
 
 
-def design_tail(specs, itarg, seg_min):
+def design_tail(specs, amp_specs):
     """Find smallest tail transistor that biases the differential amplifier."""
     db = specs['in_db']
     sim_env = specs['sim_env']
     vds = specs['vdst_min']
     in_type = specs['in_type']
+
+    itarg = amp_specs['ibias']
+    seg_min = amp_specs['seg_in'] * 2
     
     if in_type == 'pch':
         vds *= -1
@@ -231,7 +338,8 @@ def design_tail(specs, itarg, seg_min):
     vgs_opt = seg_tail_iter.get_last_save_info()
 
     tail_op = db.query(vbs=0, vds=vds, vgs=vgs_opt)
-    return seg_tail, tail_op
+    tail_op['seg_tail'] = seg_tail
+    return tail_op
 
 
 def run_main():
@@ -269,16 +377,14 @@ def run_main():
         )
 
     input_op = design_input(specs)
-    load_scale, load_op = design_load(specs, input_op)
-    seg_in, seg_load, amp_specs = design_amp(specs, input_op, load_op, load_scale)
-    seg_tail, tail_op = design_tail(specs, amp_specs['ibias'], seg_in * 2)
+    load_op = design_load(specs, input_op)
+    amp_specs = design_amp(specs, input_op, load_op)
+    tail_op = design_tail(specs, amp_specs)
     print('amplifier performance:')
     pprint.pprint(amp_specs)
-    for name, seg, op in (('input', seg_in, input_op),
-                          ('load', seg_load, load_op),
-                          ('tail', seg_tail, tail_op)):
-
-        print('%s seg = %d' % (name, seg))
+    for name, op in (('input', input_op),
+                     ('load', load_op),
+                     ('tail', tail_op)):
         print('%s op:' % name)
         pprint.pprint(op)
     
