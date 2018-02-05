@@ -62,8 +62,8 @@ measurements:
     is_nmos: True
     fg: 20
     noise_temp_kelvin: 300
-    noise_integ_fstart: 1.4e+9
-    noise_integ_fstop: 1.6e+9
+    noise_integ_fstart: 0.1e+9
+    noise_integ_fstop: 0.3e+9
     testbenches:
       ibias:
         tb_package: 'verification_ec.mos.sim'
