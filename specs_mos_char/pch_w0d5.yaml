@@ -1,0 +1,108 @@
+dut_lib: 'bag_testbenches_ec'
+dut_cell: 'mos_analogbase'
+layout_package: 'abs_templates_ec.mos_char'
+layout_class: 'Transistor'
+
+impl_lib: 'AAAFOO_MOSCHAR_PCH'
+dsn_basename: 'MOS_PCH'
+
+rcx_params: {}
+view_name: 'schematic'
+
+root_dir: 'data/mos_char_pch'
+summary_fname: 'summary.yaml'
+
+routing_grid:
+  layers: [4, 5]
+  spaces: [0.1, 0.1]
+  widths: [0.1, 0.1]
+  bot_dir: 'x'
+
+sweep_params:
+  intent: ['lvt']
+
+layout_params:
+  mos_type: 'pch'
+  lch: 45.0e-9
+  w: 0.5e-6
+  fg: 20
+  intent: 'lvt'
+  fg_dum: 4
+  stack: 1
+  ptap_w: 0.5e-6
+  ntap_w: 0.5e-6
+  tr_w_dict:
+    g: 1
+    d: 2
+    s: 2
+  tr_sp_dict:
+    gs: 1
+    gd: 1
+    sb: 1
+    db: 1
+
+schematic_params:
+  mos_type: 'pch'
+  lch: 45.0e-9
+  w: 0.5e-6
+  fg: 20
+  intent: 'lvt'
+  stack: 1
+  dum_info: !!null
+
+dut_wrappers: []
+
+env_list: ['tt']
+
+measurements:
+  - meas_type: 'mos_ss'
+    meas_package: 'verification_ec.mos.sim'
+    meas_class: 'MOSCharSS'
+    out_fname: 'mos_ss.yaml'
+    is_nmos: False
+    fg: 20
+    noise_temp_kelvin: 300
+    noise_integ_fstart: 0.1e+9
+    noise_integ_fstop: 0.3e+9
+    testbenches:
+      ibias:
+        tb_package: 'verification_ec.mos.sim'
+        tb_class: 'MOSIdTB'
+        tb_lib: 'bag_testbenches_ec'
+        tb_cell: 'mos_tb_ibias'
+        sch_params: {}
+        wrapper_type: ''
+        vgs_num: 200
+        vgs_max: 1.2
+        ibias_min_fg: 1.0e-6
+        ibias_max_fg: 200.0e-6
+        vgs_resolution: 4.0e-3
+      sp:
+        tb_package: 'verification_ec.mos.sim'
+        tb_class: 'MOSSPTB'
+        tb_lib: 'bag_testbenches_ec'
+        tb_cell: 'mos_tb_sp'
+        sch_params: {}
+        wrapper_type: ''
+        vgs_num: 30
+        vds_num: 20
+        vds_min: 5.0e-3
+        vds_max: 1.2
+        vbs: [0.0, 0.15, 0.3, 0.45]
+        sp_freq: 1.0e+6
+        cfit_method: 'average'
+      noise:
+        tb_package: 'verification_ec.mos.sim'
+        tb_class: 'MOSNoiseTB'
+        tb_lib: 'bag_testbenches_ec'
+        tb_cell: 'mos_tb_noise'
+        sch_params: {}
+        wrapper_type: ''
+        vgs_num: 30
+        vds_num: 20
+        vds_min: 5.0e-3
+        vds_max: 1.2
+        vbs: [0.0, 0.15, 0.3, 0.45]
+        freq_start: 10.0e+6
+        freq_stop: 100.0e+9
+        num_per_dec: 20
