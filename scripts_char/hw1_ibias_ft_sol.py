@@ -20,9 +20,9 @@ impl_lib = 'AAAFOO_hw1_tb_ft'
 # directory to save simulation data
 data_dir = os.path.join('data', 'hw1')
 # sweep values
-mos_list = ['nch', 'pch']
+mos_list = ['nch']
 thres_list = ['lvt']
-lch_list = [45e-9, 90e-9, 180e-9]
+lch_list = [45e-9]
 
 # create data directory if it doesn't exist
 os.makedirs(data_dir, exist_ok=True)
@@ -97,7 +97,7 @@ def compute_ft():
                 info = compute_ft_helper(mos_type, results)
                 for key, val in info.items():
                     results[key] = val
-                    results['sweep_params'][key] = results['sweep_params'][output]
+                    results['sweep_params'][key] = results['sweep_params']['ig'][:2]
                 save_sim_results(results, fname)
 
 
@@ -118,12 +118,12 @@ def compute_ft_helper(mos_type, results):
     mag_mat = np.abs(idsmat / igmat)
     # get |mag - 1|
     abs_diff_mat = np.abs(mag_mat - 1)
+    # print(abs_diff_mat)
     # get ft matrix
     arg_mat = np.argmin(abs_diff_mat, axis=2)
-    # broadcast frequency 1D array to 3D array
-    _, _, fmat = np.meshgrid(xvec, yvec, fvec, indexing='ij', copy=False)
     # get frequencies at which TF magnitude is closest to 1
-    fmat = fmat[arg_mat]
+    fmat = fvec[arg_mat]
+    # print(arg_mat)
     return dict(ft=fmat)
 
 def plot_2d_data(mos_type, results, output, fig_idx):
@@ -139,7 +139,6 @@ def plot_2d_data(mos_type, results, output, fig_idx):
         # change 1D sweep array into 2D array with same size as results
         xmat, ymat = np.meshgrid(xvec, yvec, indexing='ij', copy=False)
 
-        print(output, np.max(zmat))
         if output == 'ibias' and mos_type == 'pch':
             # make sure bias current is positive
             zmat = -zmat
@@ -165,7 +164,6 @@ if __name__ == '__main__':
         bprj = local_dict['bprj']
 
     characterize(bprj)
-    # print_data_info()
     compute_ft()
     plot_data()
     
