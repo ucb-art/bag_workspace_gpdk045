@@ -5,4 +5,3 @@ bag_serdes_ec $BAG_WORK_DIR/bag_serdes_ec/BagModules
 bag_testbenches_ec $BAG_WORK_DIR/bag_testbenches_ec/BagModules
 
 ee240b_mos_char $BAG_WORK_DIR/BagModules
-
