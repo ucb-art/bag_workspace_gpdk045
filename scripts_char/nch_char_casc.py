@@ -18,5 +18,5 @@ if __name__ == '__main__':
         bprj = local_dict['bprj']
 
     sim = DesignManager(bprj, config_file)
-    sim.characterize_designs(generate=True, measure=True, load_from_file=False)
-    # sim.characterize_designs(generate=False, measure=True, load_from_file=True)
+    # sim.characterize_designs(generate=True, measure=True, load_from_file=False)
+    sim.characterize_designs(generate=False, measure=True, load_from_file=True)
