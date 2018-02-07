@@ -6,7 +6,8 @@ from verification_ec.mos.query import MOSDBDiscrete
 
 def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
     # initialize transistor database from simulation data
-    mos_db = MOSDBDiscrete([spec_file], interp_method=interp_method)
+    mos_db = MOSDBDiscrete([spec_file], interp_method=interp_method,
+                           is_schematic=True)
     # set process corners
     mos_db.env_list = [sim_env]
     # set layout parameters
