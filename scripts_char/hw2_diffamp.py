@@ -40,7 +40,7 @@ def design_load(specs, input_op):
     """Design load.
 
     Sweep vgs.  For each vgs, compute gain and max bandwidth.  If
-    both gain and BW specs are met, pick operating point that maximizes
+    both gain and BW specs are met, pick operating point that minimizes
     gamma_r * gm_r
     """
     db = specs['load_db']
@@ -75,7 +75,9 @@ def design_load(specs, input_op):
     metric_best = float('inf')
     gain_max = 0
     bw_max = 0
-    for vgs_val in np.linspace(vgs_min, vgs_max, num_points, endpoint=True):
+    vgs_vec = np.linspace(vgs_min, vgs_max, num_points, endpoint=True)
+    bw_list, gain_list, gamma_list, gm_list, metric_list = [], [], [], [], []
+    for vgs_val in vgs_vec:
         farg = db.get_fun_arg(vgs=vgs_val, vds=vout-vs, vbs=0)
         scale = itarg / ib_fun(farg)
         gm_r = gm_fun(farg) * scale
@@ -86,6 +88,11 @@ def design_load(specs, input_op):
         bw_cur = (gds_r + gds_i) / (cdd_i + cdd_r) / 2 / np.pi
         gain_cur = gm_i / (gds_r + gds_i)
         metric_cur = gamma_r * gm_r
+        bw_list.append(bw_cur)
+        gain_list.append(gain_cur)
+        metric_list.append(metric_cur)
+        gamma_list.append(gamma_r)
+        gm_list.append(gm_r)
         if gain_cur >= gain_min and bw_cur >= bw:
             if metric_cur < metric_best:
                 metric_best = metric_cur
@@ -98,6 +105,21 @@ def design_load(specs, input_op):
         raise ValueError('No solution.  max gain = %.4g, '
                          'max bw = %.4g' % (gain_max, bw_max))
     
+    import matplotlib.pyplot as plt
+    f, ax_list = plt.subplots(5, sharex=True)
+    ax_list[0].plot(vgs_vec, np.asarray(bw_list) / 1e9)
+    ax_list[0].set_ylabel('max Bw (GHz)')
+    ax_list[1].plot(vgs_vec, gain_list)
+    ax_list[1].set_ylabel('gain (V/V)')
+    ax_list[2].plot(vgs_vec, gamma_list)
+    ax_list[2].set_ylabel(r'$\gamma_r$')
+    ax_list[3].plot(vgs_vec, np.asarray(gm_list) * 1e3)
+    ax_list[3].set_ylabel(r'$g_{mr}$ (mS)')
+    ax_list[4].plot(vgs_vec, np.asarray(metric_list) * 1e3)
+    ax_list[4].set_ylabel(r'$\gamma_r\cdot g_{mr}$ (mS)')
+    ax_list[4].set_xlabel('Vgs (V)')
+    plt.show(block=False)
+
     result = db.query(vbs=0, vds=vout-vs, vgs=vgs_best)
     scale = itarg / result['ibias']
     return scale, result
@@ -261,10 +283,10 @@ def run_main():
         bw=10e9,
         snr_min=50,
         vsig=0.05,
-        #fstart=1.4e9,
-        #fstop=1.6e9,
-        fstart=-1,
-        fstop=-1,
+        fstart=1.4e9,
+        fstop=1.6e9,
+        # fstart=-1,
+        # fstop=-1,
         noise_temp=300,
         )
 

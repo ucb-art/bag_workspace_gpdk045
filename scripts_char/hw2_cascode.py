@@ -58,7 +58,7 @@ def design_input(specs):
                               vbs=vb-vmid)
         return (ib_fun(carg) * cs - itarg)*1e6
 
-    metric_best = 0
+    ro_best = metric_best = 0
     op_best = None
 
     if in_type == 'nch':
@@ -67,12 +67,19 @@ def design_input(specs):
         vmid_bounds = (voutcm + 5e-3, vtail - 5e-3)
 
     bot_gain_max = 0
+    # override
+    print(vgs_min, vgs_max)
+    print(vmid_bounds)
+    vgsp_list, vdsp_list, ibias_list, gmb_list, gammab_list, metric_list, ro_list = [], [], [], [], [], [], []
+    for _ in range(len(casc_scale_list)):
+        ro_list.append([])
     for vgs_val in vgs_val_list:
         try:
             vmid = sciopt.brentq(fun_zero1, vmid_bounds[0], vmid_bounds[1], args=(vgs_val,))
         except ValueError:
             continue
-
+        vgsp_list.append(vgs_val)
+        vdsp_list.append(vmid-vtail)
         barg = db.get_fun_arg(vgs=vgs_val, vds=vmid-vtail, vbs=vb-vtail)
         itarg = ib_fun(barg)
         if in_type == 'nch':
@@ -80,31 +87,70 @@ def design_input(specs):
         else:
             cb_min, cb_max = 0, vmid + vgs_max
 
-        for casc_scale in casc_scale_list:
+        bres = db.query(vgs=vgs_val,
+                        vds=vmid-vtail,
+                        vbs=vb-vtail)
+        gm_cur = bres['gm']
+        gds_cur = bres['gds']
+        gamma_cur = bres['gamma']
+        ibias_cur = bres['ibias']
+        metric_cur = gm_cur / gamma_cur / ibias_cur
+        gain_cur = gm_cur / gds_cur
+        ibias_list.append(ibias_cur)
+        gmb_list.append(gm_cur)
+        gammab_list.append(gamma_cur)
+        metric_list.append(metric_cur)
+
+        for cidx, casc_scale in enumerate(casc_scale_list):
             args2 = (casc_scale, vmid, itarg)
             try:
                 casc_bias = sciopt.brentq(fun_zero2, cb_min, cb_max, args=args2)
             except ValueError:
+                ro_list[cidx].append(np.nan)
                 continue
 
             cres = db.query(vgs=casc_bias-vmid, 
                             vds=voutcm-vmid,
                             vbs=vb-vmid)
-            bres = db.query(vgs=vgs_val,
-                            vds=vmid-vtail,
-                            vbs=vb-vtail)
-            metric_cur = bres['gm'] / bres['gamma'] / bres['ibias']
-            if bres['gm'] / bres['gds'] >= bot_gain_min:
-                if metric_cur > metric_best:
-                    metric_best = metric_cur
-                    op_best = casc_scale, cres, bres
-            else:
-                bot_gain_max = max(bot_gain_max, bres['gm'] / bres['gds'])
+
+            ro_cur = 1.0 / cres['gds'] + 1.0 / gds_cur + cres['gm'] / (cres['gds'] * gds_cur)
+            ro_list[cidx].append(ro_cur)
+            if gain_cur >= bot_gain_min and ro_cur > ro_best and metric_cur >= metric_best:
+                ro_best = ro_cur
+                metric_best = metric_cur
+                op_best = casc_scale, cres, bres
+            elif gain_cur < bot_gain_min:
+                bot_gain_max = max(bot_gain_max, gain_cur)
+
+    import matplotlib.pyplot as plt
+    f, ax_list = plt.subplots(6, sharex=True)
+    val_list_list = [vdsp_list, ibias_list, gmb_list, gammab_list, metric_list]
+    ylabel_list = ['Vds (V)', '$I_{bias}$ (uA)', r'$g_{mb}$ (uS)', r'$\gamma_b$', 
+                   r'$g_{mb} / (\gamma_b \cdot I_{bias})$ (uS/uA)']
+    sp_list = [1, 1e6, 1e6, 1, 1]
+    for ax, val_list, ylabel, sp in zip(ax_list[:-1], val_list_list,
+                                        ylabel_list, sp_list):
+        ax.plot(vgsp_list, np.asarray(val_list) * sp)
+        ax.set_ylabel(ylabel)
+
+    sp = 1e-6
+    for cidx, scale in enumerate(casc_scale_list):
+        label = 'k=%.2g' % scale
+        ax_list[-1].plot(vgsp_list, np.asarray(ro_list[cidx]) * sp, label=label)
+    ax_list[-1].set_ylabel('ro (MOhm)')
+    ax_list[-1].legend()
+    ax_list[-1].set_xlabel('Vgs (V)')
+    plt.show(block=False)
 
     if op_best is None:
         raise ValueError('No solutions found.  bot_gain_max = %.4g' % bot_gain_max)
 
     casc_scale, cres, bres = op_best
+    print(casc_scale)
+    print('bres:')
+    pprint.pprint(bres)
+    print('cres:')
+    pprint.pprint(cres)
     gmb = bres['gm']
     gdsb = bres['gds']
     ibias = bres['ibias']
@@ -187,6 +233,7 @@ def design_load(specs, input_op):
     metric_best = float('inf')
     gain_max = 0
     bw_max = 0
+    bot_gain_max = 0
     for vgs_val in np.linspace(vgs_min, vgs_max, num_points, endpoint=True):
         for casc_scale in casc_scale_list:
             for casc_bias in casc_bias_list:
@@ -219,8 +266,8 @@ def design_load(specs, input_op):
                 bw_cur = (gds_l + gds_i) / (cdd_i + cdd_l) / 2 / np.pi
                 gain_cur = gm_i / ((gds_l + gds_ic)/(gm_ic + gds_ic)*(gm_ic + gds_ic + gds_ib) - gds_ic)
                 metric_cur = gamma_l * gm_l
-                
-                if gm_b / gds_b >= bot_gain_min and gain_cur >= gain_min and bw_cur >= bw:
+                bot_gain_cur = gm_b / gds_b
+                if bot_gain_cur >= bot_gain_min and gain_cur >= gain_min and bw_cur >= bw:
                     if metric_cur < metric_best:
                         metric_best = metric_cur
                         best_ans = dict(
@@ -235,12 +282,14 @@ def design_load(specs, input_op):
                             gamma=gamma_l,
                             )
                 else:
+                    # print('Failed', gain_cur, bot_gain_cur, bw_cur)
+                    bot_gain_max = max(bot_gain_max, bot_gain_cur)
                     gain_max = max(gain_max, gain_cur)
                     bw_max = max(bw_max, bw_cur)
 
     if best_ans is None:
-        raise ValueError('No solution.  max gain = %.4g, '
-                         'max bw = %.4g' % (gain_max, bw_max))
+        raise ValueError('No solution.  max gain = %.4g, max bot_gain = %.4g, '
+                         'max bw = %.4g' % (gain_max, bot_gain_max, bw_max))
     
     return best_ans
 
@@ -387,7 +436,7 @@ def design_tail(specs, amp_specs):
 
 
 def run_main():
-    interp_method = 'spline'
+    interp_method = 'linear'
     sim_env = 'tt'
     nmos_spec = 'specs_mos_char/nch_w0d5.yaml'
     pmos_spec = 'specs_mos_char/pch_w0d5.yaml'
@@ -409,7 +458,7 @@ def run_main():
         vdd=1.2,
         voutcm=0.6,
         vdst_min=0.15,
-        vimax=0.15,
+        vimax=0.16,
         gain_min=30.0,
         bw=0.5e9,
         snr_min=50,
@@ -419,23 +468,24 @@ def run_main():
         # fstart=-1,
         # fstop=-1,
         noise_temp=300,
-        casc_scale_max=4,
-        casc_scale_step=0.5,
+        casc_scale_max=2,
+        casc_scale_step=1,
         casc_bias_step=0.1,
         )
 
     input_op = design_input(specs)
+    print('input op:')
+    pprint.pprint(input_op)
+    # return
     load_op = design_load(specs, input_op)
+    print('load op:')
+    pprint.pprint(load_op)
     amp_specs = design_amp(specs, input_op, load_op)
     tail_op = design_tail(specs, amp_specs)
+    print('tail op:')
+    pprint.pprint(tail_op)
     print('amplifier performance:')
-    pprint.pprint(amp_specs)
-    for name, op in (('input', input_op),
-                     ('load', load_op),
-                     ('tail', tail_op)):
-        print('%s op:' % name)
-        pprint.pprint(op)
-    
+    pprint.pprint(amp_specs)    
 
 if __name__ == '__main__':
     run_main()
