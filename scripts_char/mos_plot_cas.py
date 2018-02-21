@@ -14,7 +14,7 @@ from verification_ec.mos.query import MOSDBDiscrete
 def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
     # initialize transistor database from simulation data
     mos_db = MOSDBDiscrete([spec_file], interp_method=interp_method,
-                           is_schematic=True)
+                           is_schematic=True, width_var='wb')
     # set process corners
     mos_db.env_list = [sim_env]
     # set layout parameters
@@ -77,10 +77,6 @@ def plot_data(db, name='ibias', bounds=None, unit_val=None, unit_label=None,
     ax = fig.add_subplot(111, projection='3d')
     if unit_val is not None:
         ans = ans / unit_val
-<<<<<<< HEAD
-    print(np.amin(ans), np.amax(ans))
-=======
->>>>>>> hw1_soln
     ax.plot_surface(vds_mat, vgs_mat, ans, rstride=1, cstride=1, linewidth=0, cmap=cm.cubehelix)
     ax.set_title(name)
     ax.set_xlabel('Vds (V)')
@@ -90,17 +86,6 @@ def plot_data(db, name='ibias', bounds=None, unit_val=None, unit_label=None,
 
 
 def run_main():
-<<<<<<< HEAD
-    interp_method = 'linear'
-    sim_env = 'tt'
-    mos_spec = 'specs_mos_char/pch_w0d5.yaml'
-
-    intent = 'lvt'
-    
-    db = get_db(mos_spec, intent, interp_method=interp_method, sim_env=sim_env)
-
-    plot_data(db, 'gamma', fig_idx=1, bounds=dict(vds=(-0.2, 0.0)))
-=======
     interp_method = 'spline'
     sim_env = 'tt'
     nmos_spec = 'specs_mos_char/nch_w0d5_casc.yaml'
@@ -114,7 +99,6 @@ def run_main():
     plot_data(db, 'gds', fig_idx=3)
     plot_data(db, 'vstar', fig_idx=4)
     plot_data(db, 'cdd', fig_idx=5)
->>>>>>> hw1_soln
     plt.show()
 
 if __name__ == '__main__':
