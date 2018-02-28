@@ -69,7 +69,7 @@ def get_opt_poles(specs, gain):
     return f1, f2
 
 
-def design_load(specs, db):
+def design_load(specs, db, ax_list=None, label=None):
     sim_env = specs['sim_env']
     vgs_res = specs['vgs_res']
     vdd = specs['vdd']
@@ -92,7 +92,8 @@ def design_load(specs, db):
         return (ibias_fun(arg) * casc_scale - itarg) * 1e6
 
     num_pts = int(np.ceil((vgs_max - vgs_min) / vgs_res)) + 1
-    vgs_list, vds_list, vcasc_list, ibias_list = [], [], [], []
+    vgs_list, vds_list, vcasc_list, ibias_list, ro_list = [], [], [], [], [] 
+    p1_list, p2_list, gain_list = [], [], []
     for vgs_val in np.linspace(vgs_min, vgs_max, num_pts, endpoint=True):
         fout1 = zero_fun1(vdd - 5e-3, vgs_val)
         fout2 = zero_fun1(voutcm + 5e-3, vgs_val)
@@ -102,28 +103,50 @@ def design_load(specs, db):
         if vmid + vgs_max <= 0:
             continue
         barg = db.get_fun_arg(vgs=vgs_val, vds=vmid-vdd, vbs=0)
-        ib = ibias_fun(barg)
+        bot_op = db.query(vbs=0, vds=vmid-vdd, vgs=vgs_val)
+        ib = bot_op['ibias']
         args = (vmid, ib)
         fout1 = zero_fun2(vmid + vgs_max, *args)
         fout2 = zero_fun2(0, *args)
         if fout1 * fout2 > 0:
             continue
         vcasc = opt.brentq(zero_fun2, 0, vmid + vgs_max, args=args)
+        top_op = db.query(vbs=vdd-vmid, vds=voutcm-vmid, vgs=vcasc-vmid)
+
+        cir = LTICircuit()
+        cir.add_transistor(bot_op, 'mid', 'gnd', 'gnd', 'gnd', fg=1)
+        cir.add_transistor(top_op, 'out', 'gnd', 'mid', 'gnd', fg=casc_scale)
+        cur_tf = cir.get_transfer_function('out', 'out', in_type='i')
+        ro = cur_tf.num[-1] / cur_tf.den[-1]
+        p1, p2 = cur_tf.poles
+        p1, p2 = min(-p1, -p2), max(-p1, -p2)
+        p2 /= 2 * np.pi
+
+        # add approximation from input branch
+        cpar = 1 / (ro * p1)
+        p1 = 1 / (2 * np.pi * 2 * cpar * (ro / 4))
+        cur_gain = 2 * ib / vstar_in * (ro / 4)
 
         vgs_list.append(vgs_val)
         vds_list.append(vmid-vdd)
         vcasc_list.append(vcasc)
         ibias_list.append(ib)
+        ro_list.append(ro * ib)
+        p1_list.append(p1)
+        p2_list.append(p2)
+        gain_list.append(cur_gain)
 
-    f, ax_list = plt.subplots(3, sharex=True)
-    val_list_list = [vds_list, vcasc_list, ibias_list]
-    ylabel_list = ['Vds (V)', 'Vcasc (V)', '$I_{bias}$ (uA)']
-    sp_list = [1, 1, 1e6]
-    for ax, val_list, ylabel, sp in zip(ax_list, val_list_list,
-                                        ylabel_list, sp_list):
-        ax.plot(vgs_list, np.asarray(val_list) * sp)
-        ax.set_ylabel(ylabel)
+    if ax_list is not None:
+        val_list_list = [vds_list, vcasc_list, ibias_list, ro_list, p1_list, p2_list, gain_list]
+        ylabel_list = ['Vds (V)', 'Vcasc (V)', '$I_{bias}$ (uA)', r'$r_o$ (M$\Omega \cdot $ uA)',
+                       'p1 (GHz)', 'p2 (GHz)', 'Gain (V/V)']
+        sp_list = [1, 1, 1e6, 1, 1e-9, 1e-9, 1]
+        for ax, val_list, ylabel, sp in zip(ax_list, val_list_list,
+                                            ylabel_list, sp_list):
+            ax.plot(vgs_list, np.asarray(val_list) * sp, '-o', label=label)
+            ax.set_ylabel(ylabel)
 
+    return vgs_list[0], vds_list[0], vcasc_list[0]
 
 def run_main():
     interp_method = 'spline'
@@ -142,12 +165,24 @@ def run_main():
         voutcm=0.6,
         tot_err=0.04,
         t_settle=10e-9,
-        vstar_in=150e-3,
+        vstar_in=100e-3,
         casc_scale=2.0,
-        vstar_load=200e-3,
+        vstar_load=300e-3,
         )
 
-    design_load(specs, pch_db)
+    _, ax_list = plt.subplots(7, sharex=True)
+
+    print(design_load(specs, pch_db))
+
+    # for vstar_load in [150e-3, 200e-3, 250e-3, 300e-3]:
+    #     specs['vstar_load'] = vstar_load
+    #     design_load(specs, pch_db, ax_list=ax_list, label='V*=%.3g' % vstar_load)
+
+    for casc_scale in [1, 2, 3, 4]:
+        specs['casc_scale'] = casc_scale
+        design_load(specs, pch_db, ax_list=ax_list, label='k=%.2g' % casc_scale)
+    for ax in ax_list:
+        ax.legend()
     plt.show()
 
 if __name__ == '__main__':
