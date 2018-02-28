@@ -137,15 +137,16 @@ def design_load(specs, db, ax_list=None, label=None):
         gain_list.append(cur_gain)
 
     if ax_list is not None:
-        val_list_list = [vds_list, vcasc_list, ibias_list, ro_list, p1_list, p2_list, gain_list]
-        ylabel_list = ['Vds (V)', 'Vcasc (V)', '$I_{bias}$ (uA)', r'$r_o$ (M$\Omega \cdot $ uA)',
-                       'p1 (GHz)', 'p2 (GHz)', 'Gain (V/V)']
-        sp_list = [1, 1, 1e6, 1, 1e-9, 1e-9, 1]
+        val_list_list = [vds_list, gain_list, p1_list, p2_list]
+        ylabel_list = ['$V_{DS}$ (V)', 'Gain (V/V)',
+                       '$p_{1o}$ (GHz)', '$p_{2o}$ (GHz)']
+        sp_list = [1, 1, 1e-9, 1e-9]
         for ax, val_list, ylabel, sp in zip(ax_list, val_list_list,
                                             ylabel_list, sp_list):
             ax.plot(vgs_list, np.asarray(val_list) * sp, '-o', label=label)
             ax.set_ylabel(ylabel)
 
+        ax_list[-1].set_xlabel('$V_{GS}$ (V)')
     return vgs_list[0], vds_list[0], vcasc_list[0]
 
 def run_main():
@@ -170,17 +171,17 @@ def run_main():
         vstar_load=300e-3,
         )
 
-    _, ax_list = plt.subplots(7, sharex=True)
+    _, ax_list = plt.subplots(4, sharex=True)
 
     print(design_load(specs, pch_db))
 
-    # for vstar_load in [150e-3, 200e-3, 250e-3, 300e-3]:
+    # for vstar_load in [200e-3, 250e-3, 300e-3]:
     #     specs['vstar_load'] = vstar_load
     #     design_load(specs, pch_db, ax_list=ax_list, label='V*=%.3g' % vstar_load)
 
-    for casc_scale in [1, 2, 3, 4]:
+    for casc_scale in [1, 2, 3]:
         specs['casc_scale'] = casc_scale
-        design_load(specs, pch_db, ax_list=ax_list, label='k=%.2g' % casc_scale)
+        design_load(specs, pch_db, ax_list=ax_list, label='N=%.2g' % casc_scale)
     for ax in ax_list:
         ax.legend()
     plt.show()
