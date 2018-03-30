@@ -18,8 +18,14 @@ def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
     return mos_db
 
 
-def get_wn(A, rf, ro, ci, cl):
-    return np.sqrt((1 + A) / (rf * ro * ci * cl))
+def get_gain(A, rf, ro):
+    return (-A * rf + ro) / (1 + A)
+
+
+def get_wn_and_z(A, rf, ro, ci, cl, cf):
+    wn = np.sqrt((1 + A) / (rf * ro * (ci * cl + cl * cf + ci * cf)))
+    z = wn / 2 * (rf * cf + ro * cl + ro * ci + rf * ci + A * rf * cf) / (1 + A)
+    return wn, z
 
 
 def get_w3db(wn, z):
@@ -27,26 +33,34 @@ def get_w3db(wn, z):
     return wn * np.sqrt(np.sqrt(tmp**2 + 1) - tmp)
 
 
-def get_z(A, ro, rf, ci, cl):
-    return 0.5 / np.sqrt(1 + A) * (np.sqrt(ro * ci / (rf * cl)) +
-                                   np.sqrt(ro * cl / (rf * ci)) +
-                                   np.sqrt(rf * ci / (ro * cl)))
-
-
 def get_pm(z):
     return np.rad2deg(np.arctan(2 * z / np.sqrt(np.sqrt(1 + 4 * z**4) -
                                                 2 * z**2)))
 
 
-def get_opt_rf(ftarg, phase_margin, gm, ro, ci, cl):
+def get_vn_std_ber(A, rf, ro, ci, cl, cf, noise_gm):
+    k = 1.38e-23
+    T = 300
+
+    wn, z = get_wn_and_z(A, rf, ro, ci, cl, cf)
+    gm = A / ro
+
+    v1 = 4 * k * T * noise_gm * (ro/(1 + A))**2 * wn / (8*z) * (1 + (wn*rf*ci)**2)
+    v2 = 4 * k * T / rf * (A * rf / (1 + A))**2 * wn / (8*z) * (1 + (wn*ci/gm)**2)
+    return np.sqrt(v1 + v2) * 7
+
+
+def get_opt_rf(specs, gm, ro, ci, cl, cf, noise_gm):
+    ftarg = specs['ftarg']
+    phase_margin = specs['phase_margin']
+    
     wtarg = 2 * np.pi * ftarg
     wtarg_log = np.log10(wtarg)
     A = gm * ro
     rf_vec = ro * np.logspace(-3, 3, 7001)
     rf_log_vec = np.log10(rf_vec)
 
-    wn_vec = get_wn(A, rf_vec, ro, ci, cl)
-    z_vec = get_z(A, ro, rf_vec, ci, cl)
+    wn_vec, z_vec = get_wn_and_z(A, rf_vec, ro, ci, cl, cf)
     pm_vec = get_pm(z_vec)
     w3db_vec = get_w3db(wn_vec, z_vec)
 
@@ -54,7 +68,7 @@ def get_opt_rf(ftarg, phase_margin, gm, ro, ci, cl):
     w3db_max = w3db_vec[max_idx]
     w3db_dc = w3db_vec[0]
     if w3db_max < wtarg:
-        return np.nan, np.nan, np.nan, np.nan, np.nan
+        return (np.nan,) * 6
 
     w3db_log_vec = np.log10(w3db_vec)
 
@@ -90,42 +104,45 @@ def get_opt_rf(ftarg, phase_margin, gm, ro, ci, cl):
         rf_log_opt = opt.brentq(fun, a, b)
     
     rf_opt = 10.0**rf_log_opt
-    rdc_opt = (-A * rf_opt + ro) / (1 + A)
-    z_opt = get_z(A, ro, rf_opt, ci, cl)
+    rdc_opt = get_gain(A, rf_opt, ro)
+    wn_opt, z_opt = get_wn_and_z(A, rf_opt, ro, ci, cl, cf)
     pm_opt = get_pm(z_opt)
-    wn_opt = get_wn(A, rf_opt, ro, ci, cl)
     f3db_opt = get_w3db(wn_opt, z_opt) / (2 * np.pi)
+    vn_std = get_vn_std_ber(A, rf_opt, ro, ci, cl, cf, noise_gm)
 
-    return rf_opt, rdc_opt, z_opt, pm_opt, f3db_opt
+    return rf_opt, rdc_opt, z_opt, pm_opt, f3db_opt, vn_std
 
 
 def design_k(k, specs, tia_op):
-    ftarg = specs['ftarg']
-    phase_margin = specs['phase_margin']
     ci0 = specs['ci']
     cl0 = specs['cl']
 
-    gm = tia_op['gm']
+    gmn = tia_op['gmn']
+    gmp = tia_op['gmp']
+    gamman = tia_op['gamman']
+    gammap = tia_op['gammap']
     ro = tia_op['ro']
     cgg = tia_op['cgg']
     cdd = tia_op['cdd']
+    cgd = tia_op['cgd']
 
     ci = ci0 + k * cgg
     cl = cl0 + k * cdd
-    gm = k * gm
+    cf = k * cgd
+    gm = k * (gmn + gmp)
+    noise_gm = k * (gamman * gmn + gammap * gmp)
     ro = ro / k
-    
-    return get_opt_rf(ftarg, phase_margin, gm, ro, ci, cl)
+    return get_opt_rf(specs, gm, ro, ci, cl, cf, noise_gm)
 
 
 def plot_vs_k(specs, tia_op):
     ftarg = specs['ftarg']
     k_list = np.logspace(0, 2, 201)
 
-    rf_list, rdc_list, z_list, pm_list, f3db_list = [], [], [], [], []
     idx0 = 0
+    rf_list, rdc_list, z_list, pm_list, f3db_list, vstd_list = [], [], [], [], [], []
     for idx, k in enumerate(k_list):
-        rf, rdc, z, pm, f3db = design_k(k, specs, tia_op)
+        rf, rdc, z, pm, f3db, vstd = design_k(k, specs, tia_op)
         if np.isnan(rdc) or rdc > 0:
             idx0 = idx + 1
             del rf_list[:]
@@ -133,18 +150,28 @@ def plot_vs_k(specs, tia_op):
             del z_list[:]
             del pm_list[:]
             del f3db_list[:]
+            del vstd_list[:]
         else:
             rf_list.append(rf)
             rdc_list.append(rdc)
             z_list.append(z)
             pm_list.append(pm)
             f3db_list.append(f3db)
+            vstd_list.append(vstd)
     
     k_list = k_list[idx0:]
     gain_list = np.abs(rdc_list)
     max_idx = np.argmax(gain_list)
 
-    fig, (ax0, ax1, ax3) = plt.subplots(3, sharex=True)
+    opt_info = dict(
+        size=k_list[max_idx],
+        rf=rf_list[max_idx],
+        rdc=gain_list[max_idx],
+        )
+    print('opt info:')
+    pprint.pprint(opt_info)
+
+    fig, (ax0, ax1, ax2, ax3) = plt.subplots(4, sharex=True)
     title_str = 'Amplifier Performance v.s. size'
     ax0.set_title(title_str)
     ax0.loglog(k_list, rf_list, color='b', label='$R_f$')
@@ -159,6 +186,9 @@ def plot_vs_k(specs, tia_op):
     fmax = max(np.max(f3db_list), ftarg) * 1.05
     ax1.set_ylabel('$f_{3db}$ (Hz)')
     ax1.set_ylim([fmin, fmax])
+
+    ax2.semilogx(k_list, np.array(vstd_list) * 1e3, 'b')
+    ax2.set_ylabel('$V_{noise}$ (mV)')
 
     ax3.semilogx(k_list, z_list, 'b')
     ax3.semilogx([k_list[max_idx]], [z_list[max_idx]], marker='o', color='b')
@@ -185,19 +215,25 @@ def get_tia_op(specs, ndb, pdb):
 
     ibias = nch_op['ibias']
     pscale = ibias / pch_op['ibias']
-    gm = nch_op['gm'] + pch_op['gm'] * pscale
+    gmp = pch_op['gm'] * pscale
+    gmn = nch_op['gm']
+    gm = gmn + gmp
     gds = nch_op['gds'] + pch_op['gds'] * pscale
-    cgg = nch_op['cgg'] + pch_op['cgg'] * pscale
-    cdd = nch_op['cdd'] + pch_op['cdd'] * pscale
-
+    cgd = nch_op['cgd'] + pch_op['cgd'] * pscale
+    cgg = nch_op['cgg'] + pch_op['cgg'] * pscale - cgd
+    cdd = nch_op['cdd'] + pch_op['cdd'] * pscale - cgd
     return dict(
         ibias=ibias,
         pscale=pscale,
-        gm=gm,
+        gmn=gmn,
+        gmp=gmp,
+        gamman=nch_op['gamma'],
+        gammap=pch_op['gamma'],
         gds=gds,
         ro=1.0/gds,
         cgg=cgg,
         cdd=cdd,
+        cgd=cgd,
         gmro=gm/gds,
         )
         
@@ -212,8 +248,9 @@ def run_main():
     specs = dict(
         vdd=1.2,
         vincm=0.6,
-        ftarg=5e9,
+        ftarg=4e9,
         phase_margin=45,
+        isw=10e-6,
         ci=100e-15,
         cl=40e-15,
         )
@@ -227,6 +264,7 @@ def run_main():
     pprint.pprint(tia_op)
     
     plot_vs_k(specs, tia_op)
+    # print(design_k(45, specs, tia_op))
 
 if __name__ == '__main__':
     np.seterr(all='raise')
