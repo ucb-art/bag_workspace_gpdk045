@@ -251,7 +251,7 @@ def run_main():
         ftarg=4e9,
         phase_margin=45,
         isw=10e-6,
-        ci=100e-15,
+        ci=20e-15,
         cl=40e-15,
         )
 

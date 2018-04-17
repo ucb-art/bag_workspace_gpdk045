@@ -4,3 +4,7 @@ DEFINE ee240b_mos_char $BAG_WORK_DIR/ee240b_mos_char
 DEFINE ee240b_hw1 $BAG_WORK_DIR/ee240b_hw1
 DEFINE ee240b_hw2 $BAG_WORK_DIR/ee240b_hw2
 DEFINE ee240b_hw3 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_hw3
+DEFINE ee240b_prj_phase1 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_prj_phase1
+DEFINE AAAFOO_MOSCHAR_NCH_0d6 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/gen_libs/AAAFOO_MOSCHAR_NCH_0d6
+#Removed by ddDeleteObj: DEFINE ee240b_phase2 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_phase2
+DEFINE ee240b_prj_phase2 /home/aa/users/erichang/ee240b/bag_workspace_gpdk045/ee240b_prj_phase2

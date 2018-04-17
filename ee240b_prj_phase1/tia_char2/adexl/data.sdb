@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<setupdb version="6">data
+	<active>Active Setup
+		<corners>
+			<corner enabled="1">_default</corner>
+		</corners>
+		<extensions>
+			<extension>Parasitics
+				<callback>_parSetupDBExtensionCB</callback>
+				<iconvalue></iconvalue>
+				<icontype></icontype>
+			</extension>
+		</extensions>
+		<currentmode>Single Run, Sweeps and Corners</currentmode>
+		<overwritehistory>0</overwritehistory>
+		<tests>
+			<test>ac
+				<tool>ADE</tool>
+				<tooloptions>
+					<option>cell
+						<value>tia_char2</value>
+					</option>
+					<option>lib
+						<value>ee240b_prj_phase1</value>
+					</option>
+					<option>sim
+						<value>spectre</value>
+					</option>
+					<option>view
+						<value>schematic</value>
+					</option>
+					<option>path
+						<value>$AXL_SETUPDB_DIR/test_states</value>
+					</option>
+					<option>state
+						<value>ac_active</value>
+					</option>
+				</tooloptions>
+				<origoptions>
+					<option>cell
+						<value>tia_char</value>
+					</option>
+					<option>lib
+						<value>ee240b_prj_phase1</value>
+					</option>
+					<option>sim
+						<value>spectre</value>
+					</option>
+					<option>view
+						<value>schematic</value>
+					</option>
+				</origoptions>
+				<outputs>
+					<output>bw
+						<evalType>point</evalType>
+					</output>
+					<output>rdc
+						<evalType>point</evalType>
+					</output>
+				</outputs>
+			</test>
+		</tests>
+		<vars>
+			<var>ci
+				<value>142.1f</value>
+				<dependentTests>
+					<dependentTest enabled="1">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>cl
+				<value>65.8f</value>
+				<dependentTests>
+					<dependentTest enabled="1">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>iamp
+				<value>1</value>
+				<dependentTests>
+					<dependentTest enabled="1">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>rf
+				<value>4305.9</value>
+				<dependentTests>
+					<dependentTest enabled="1">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>gm
+				<value>26.1m</value>
+				<dependentTests>
+					<dependentTest omitted="0">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>ro
+				<value>625.4</value>
+				<dependentTests>
+					<dependentTest omitted="0">ac</dependentTest>
+				</dependentTests>
+			</var>
+			<var>cgd
+				<value>9.58f</value>
+				<dependentTests>
+					<dependentTest omitted="0">ac</dependentTest>
+				</dependentTests>
+			</var>
+		</vars>
+		<overwritehistoryname>Interactive.0</overwritehistoryname>
+		<plottingoptions>
+			<plottingoption>plottype
+				<value>None</value>
+			</plottingoption>
+			<plottingoption>usewaveformtemplate
+				<value>no</value>
+			</plottingoption>
+			<plottingoption>waveformtemplate
+				<value></value>
+			</plottingoption>
+			<plottingoption>allplottingtemplates
+				<value></value>
+			</plottingoption>
+			<plottingoption>defaultplottingtemplate
+				<value></value>
+			</plottingoption>
+		</plottingoptions>
+	</active>
+	<history>History</history>
+</setupdb>

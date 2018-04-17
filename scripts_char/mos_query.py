@@ -17,15 +17,15 @@ def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
 def run_main():
     interp_method = 'spline'
     sim_env = 'tt'
-    nmos_spec = 'specs_mos_char/nch_w0d5_90n.yaml'
+    nmos_spec = 'specs_mos_char/nch_w0d5.yaml'
 
     intent = 'lvt'
-    
+    print(intent)
     db = get_db(nmos_spec, intent, interp_method=interp_method, sim_env=sim_env)
 
-    pprint.pprint(db.query(vbs=0, vds=0.45, vgs=0.45))
-    pprint.pprint(db.query(vbs=0, vds=0.5, vgs=0.5))
-    pprint.pprint(db.query(vbs=0.15, vds=0.55, vgs=0.55))
+    pprint.pprint(db.query(vbs=0, vds=0.6, vstar=0.2))
+    # pprint.pprint(db.query(vbs=0, vds=0.5, vgs=0.5))
+    # pprint.pprint(db.query(vbs=0.15, vds=0.55, vgs=0.55))
 
 
 if __name__ == '__main__':
