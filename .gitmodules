@@ -4,12 +4,12 @@
 [submodule "BAG_XBase_demo"]
 	path = BAG_XBase_demo
 	url = https://github.com/ucb-art/BAG_XBase_demo.git
-[submodule "bag_serdes_ec"]
-	path = bag_serdes_ec
-	url = https://github.com/ucb-art/bag_serdes_ec.git
 [submodule "BAG2_TEMPLATES_EC"]
 	path = BAG2_TEMPLATES_EC
 	url = git@github.com:ucb-art/BAG2_TEMPLATES_EC.git
 [submodule "BAG_framework"]
 	path = BAG_framework
 	url = git@github.com:ucb-art/BAG_framework.git
+[submodule "bag_testbenches"]
+	path = bag_testbenches
+	url = git@github.com:ucb-art/bag_testbenches.git
