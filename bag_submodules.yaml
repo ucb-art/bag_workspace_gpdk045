@@ -4,3 +4,5 @@ bag_testbenches_ec:
   url: https://github.com/ucb-art/bag_testbenches_ec.git
 BAG_XBase_demo:
   url: https://github.com/ucb-art/BAG_XBase_demo.git
+BAG2_TEMPLATES_EC:
+  url: https://github.com/ucb-art/BAG2_TEMPLATES_EC.git
