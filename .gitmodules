@@ -1,9 +1,6 @@
 [submodule "gpdk045"]
 	path = gpdk045
 	url = https://github.com/ucb-art/gpdk045.git
-[submodule "BAG_XBase_demo"]
-	path = BAG_XBase_demo
-	url = https://github.com/ucb-art/BAG_XBase_demo.git
 [submodule "BAG2_TEMPLATES_EC"]
 	path = BAG2_TEMPLATES_EC
 	url = git@github.com:ucb-art/BAG2_TEMPLATES_EC.git
