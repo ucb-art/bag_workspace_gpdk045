@@ -151,5 +151,5 @@ if __name__ == '__main__':
         bprj = local_dict['bprj']
 
     characterize(bprj)
-    # print_data_info()
-    # plot_data()
+    print_data_info()
+    plot_data()

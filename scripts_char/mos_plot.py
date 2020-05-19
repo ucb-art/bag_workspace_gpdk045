@@ -9,7 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from matplotlib import ticker
 
-from verification_ec.mos.query import MOSDBDiscrete
+from verification.mos.query import MOSDBDiscrete
 
 def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
     # initialize transistor database from simulation data
@@ -88,7 +88,7 @@ def plot_data(db, name='ibias', bounds=None, unit_val=None, unit_label=None,
 def run_main():
     interp_method = 'spline'
     sim_env = 'tt'
-    nmos_spec = 'specs_mos_char/nch_w0d5_casc.yaml'
+    nmos_spec = 'specs_mos_char/nch_w0d5_90n.yaml'
 
     intent = 'lvt'
     

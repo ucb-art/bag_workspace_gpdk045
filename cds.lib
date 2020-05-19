@@ -1,1 +1,5 @@
+# File Created by Biqi Zhao,550,Cory Hall,,,, at Mon May 18 12:01:55 2020
+# assisted by CdsLibEditor
 INCLUDE cds.lib.core
+
+DEFINE AAAFOO_MOSCHAR_NCH /tools/projects/rebekah_zhao/bag_workspace_gpdk045/AAAFOO_MOSCHAR_NCH

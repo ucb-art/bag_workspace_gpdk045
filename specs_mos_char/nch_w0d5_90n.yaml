@@ -1,4 +1,4 @@
-dut_lib: 'bag_testbenches_ec'
+dut_lib: 'bag_testbenches'
 dut_cell: 'mos_analogbase'
 layout_package: 'abs_templates_ec.mos_char'
 layout_class: 'Transistor'
@@ -56,7 +56,7 @@ env_list: ['tt']
 
 measurements:
   - meas_type: 'mos_ss'
-    meas_package: 'verification_ec.mos.sim'
+    meas_package: 'verification.mos.sim'
     meas_class: 'MOSCharSS'
     out_fname: 'mos_ss.yaml'
     is_nmos: True
@@ -66,9 +66,9 @@ measurements:
     noise_integ_fstop: 0.3e+9
     testbenches:
       ibias:
-        tb_package: 'verification_ec.mos.sim'
+        tb_package: 'verification.mos.sim'
         tb_class: 'MOSIdTB'
-        tb_lib: 'bag_testbenches_ec'
+        tb_lib: 'bag_testbenches'
         tb_cell: 'mos_tb_ibias'
         sch_params: {}
         wrapper_type: ''
@@ -78,9 +78,9 @@ measurements:
         ibias_max_fg: 200.0e-6
         vgs_resolution: 4.0e-3
       sp:
-        tb_package: 'verification_ec.mos.sim'
+        tb_package: 'verification.mos.sim'
         tb_class: 'MOSSPTB'
-        tb_lib: 'bag_testbenches_ec'
+        tb_lib: 'bag_testbenches'
         tb_cell: 'mos_tb_sp'
         sch_params: {}
         wrapper_type: ''
@@ -92,9 +92,9 @@ measurements:
         sp_freq: 1.0e+6
         cfit_method: 'average'
       noise:
-        tb_package: 'verification_ec.mos.sim'
+        tb_package: 'verification.mos.sim'
         tb_class: 'MOSNoiseTB'
-        tb_lib: 'bag_testbenches_ec'
+        tb_lib: 'bag_testbenches'
         tb_cell: 'mos_tb_noise'
         sch_params: {}
         wrapper_type: ''
