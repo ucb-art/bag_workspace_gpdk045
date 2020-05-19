@@ -5,4 +5,4 @@ BAG_XBase_demo:
 BAG2_TEMPLATES_EC:
   url: https://github.com/ucb-art/BAG2_TEMPLATES_EC.git
 BAG_framework:
-  url: https://github.com/ucb-art/BAG2_framework.git
+  url: https://github.com/ucb-art/BAG_framework.git
