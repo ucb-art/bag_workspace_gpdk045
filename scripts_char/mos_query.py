@@ -2,7 +2,7 @@
 
 import pprint
 
-from verification_ec.mos.query import MOSDBDiscrete
+from verification.mos.query import MOSDBDiscrete
 
 def get_db(spec_file, intent, interp_method='spline', sim_env='tt'):
     # initialize transistor database from simulation data

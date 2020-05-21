@@ -6,7 +6,7 @@ from bag.simulation.core import DesignManager
 
 if __name__ == '__main__':
 
-    config_file = 'specs_mos_char/nch_w0d5_casc.yaml'
+    config_file = 'specs_mos_char/pch_w0d5_90n.yaml'
 
     local_dict = locals()
     if 'bprj' not in local_dict:
@@ -19,4 +19,4 @@ if __name__ == '__main__':
 
     sim = DesignManager(bprj, config_file)
     sim.characterize_designs(generate=True, measure=True, load_from_file=False)
-    #sim.characterize_designs(generate=True, measure=True, load_from_file=True)
+    # sim.characterize_designs(generate=False, measure=True, load_from_file=True)

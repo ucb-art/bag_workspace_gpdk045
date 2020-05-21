@@ -3,13 +3,13 @@ dut_cell: 'mos_analogbase'
 layout_package: 'abs_templates_ec.mos_char'
 layout_class: 'Transistor'
 
-impl_lib: 'AAAFOO_MOSCHAR_NCH'
-dsn_basename: 'MOS_NCH'
+impl_lib: 'AAAFOO_MOSCHAR_PCH'
+dsn_basename: 'MOS_PCH'
 
 rcx_params: {}
 view_name: 'schematic'
 
-root_dir: 'data/mos_char_nch_90n'
+root_dir: 'data/mos_char_pch_90n'
 summary_fname: 'summary.yaml'
 
 routing_grid:
@@ -22,7 +22,7 @@ sweep_params:
   intent: ['lvt']
 
 layout_params:
-  mos_type: 'nch'
+  mos_type: 'pch'
   lch: 90.0e-9
   w: 0.5e-6
   fg: 20
@@ -42,7 +42,7 @@ layout_params:
     db: 1
 
 schematic_params:
-  mos_type: 'nch'
+  mos_type: 'pch'
   lch: 90.0e-9
   w: 0.5e-6
   fg: 20
@@ -59,7 +59,7 @@ measurements:
     meas_package: 'verification.mos.sim'
     meas_class: 'MOSCharSS'
     out_fname: 'mos_ss.yaml'
-    is_nmos: True
+    is_nmos: False
     fg: 20
     noise_temp_kelvin: 300
     noise_integ_fstart: 0.1e+9

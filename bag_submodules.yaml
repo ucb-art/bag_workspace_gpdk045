@@ -1,6 +1,8 @@
-bag_serdes_ec:
-  url: https://github.com/ucb-art/bag_serdes_ec.git
-bag_testbenches_ec:
-  url: https://github.com/ucb-art/bag_testbenches_ec.git
+bag_testbenches:
+  url: https://github.com/ucb-art/bag_testbenches.git
 BAG_XBase_demo:
   url: https://github.com/ucb-art/BAG_XBase_demo.git
+BAG2_TEMPLATES_EC:
+  url: https://github.com/ucb-art/BAG2_TEMPLATES_EC.git
+BAG_framework:
+  url: https://github.com/ucb-art/BAG_framework.git
