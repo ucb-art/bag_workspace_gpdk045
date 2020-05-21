@@ -9,7 +9,7 @@
 	url = https://github.com/ucb-art/BAG_XBase_demo.git
 [submodule "gpdk045"]
 	path = gpdk045
-	url = git@github.com:BiqiZhao/gpdk045.git
+	url = git@github.com:ucb-art/gpdk045.git
 [submodule "BAG_framework"]
 	path = BAG_framework
 	url = https://github.com/ucb-art/BAG_framework.git
